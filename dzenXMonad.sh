@@ -37,7 +37,7 @@ battery() {
 
     percentage=$(acpi -b | cut -d "," -f 2 | tr -d " %")
 
-    echo -n "$status$percentage%"
+    echo -n "$state$percentage%"
 }
 
 while true; do
