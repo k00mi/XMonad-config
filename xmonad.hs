@@ -62,6 +62,8 @@ myKeys XConfig{XMonad.modMask = modm} = M.fromList
       , ((modm,               xK_c          ), spawn "mpc -q toggle")
       , ((modm .|. shiftMask, xK_m          ), spawn "/home/koomi/bin/mpdmenu")
 
+      , ((modm,               xK_u          ), focusUrgent)
+
       , ((0,         xF86XK_AudioRaiseVolume), raiseVolumeChannels ["Master"] 2 >>= alert)
       , ((0,         xF86XK_AudioLowerVolume), lowerVolumeChannels ["Master"] 2 >>= alert)
       ]
