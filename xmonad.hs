@@ -86,8 +86,8 @@ myManageHook = composeAll
     , className   =?  "Pidgin"        --> doShift "2"
     , className   =?  "Dwb"           --> doShift "1"
     , className   =?  "mplayer2"      --> doFloat
-    , className   =?  "sxiv"          --> doFullFloat
-    , className   =?  "Steam"         --> doFullFloat
+    , className   =?  "Steam"         --> doFloat
+    , isFullscreen                    --> doFullFloat
     ]
 -- end of HOOKS }}}
 
