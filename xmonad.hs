@@ -32,7 +32,12 @@ import XMonad.Layout.PerWorkspace
 main :: IO ()
 main = do
     dzenHandle <- spawnPipe myStatusBar
-    xmonad $ withUrgencyHook dzenUrgencyHook { args = ["-fn", barFont, "-bg", colorDarkCream, "-fg", colorBlue] } $ defaultConfig
+    xmonad $ withUrgencyHook dzenUrgencyHook { args = [ "-fn", barFont
+                                                      , "-bg", colorDarkCream
+                                                      , "-fg", colorBlue
+                                                      ]
+                                             }
+           $ defaultConfig
       { modMask             = mod4Mask
       , terminal            = "urxvt"
       , workspaces          = map show [1..9]
@@ -84,7 +89,7 @@ myManageHook :: ManageHook
 myManageHook = composeAll
     [ appName     =?  "weechat 0.4.0" --> doShift "2"
     , className   =?  "Pidgin"        --> doShift "2"
-    , className   =?  "Dwb"           --> doShift "1"
+    -- , className   =?  "Dwb"           --> doShift "1"
     , className   =?  "mplayer2"      --> doFloat
     , className   =?  "Steam"         --> doFloat
     , isFullscreen                    --> doFullFloat

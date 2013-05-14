@@ -7,7 +7,7 @@ bar() {
 mpd() {
      output=$(mpc | head -2)
 
-     if [ $(echo "$output" | wc -l) -lt 3 ]; then
+     if [ $(echo "$output" | wc -l) -eq 1 ]; then
        echo "[STOPPED]"
        return 1
      fi
@@ -15,13 +15,12 @@ mpd() {
      state=$(echo $output | tail -1 | awk '{print $1 }' | tr -d '[]')
 
      case $state in
-       playing) state='▶ ';;
-       paused)  state='▎▎';;
-       *)       state='? ';;
+       playing) state='|> ';;
+       paused)  state='|| ';;
      esac
 
      echo -n "$state"
-     echo -n "$(echo $output | head -1)"
+     echo -n "$(echo $output | head -1) "
      echo -n "$(bar $(echo $output | tail -1 | awk '{print $4 }' | tr -d '()%'))"
 }
 
