@@ -15,11 +15,11 @@ mpd() {
      state=$(echo $output | tail -1 | awk '{print $1 }' | tr -d '[]')
 
      case $state in
-       playing) state='|> ';;
-       paused)  state='|| ';;
+       playing) state='|>';;
+       paused)  state='||';;
      esac
 
-     echo -n "$state"
+     echo -n "$state "
      echo -n "$(echo $output | head -1) "
      echo -n "$(bar $(echo $output | tail -1 | awk '{print $4 }' | tr -d '()%'))"
 }
@@ -28,10 +28,10 @@ battery() {
     state=$(acpi -b | cut -d ' ' -f 3 | tr -d ',')
 
     case $state in
-      Discharging) state='<';;
+      Discharging) state='↓';;
       Unknown)     state='?';;
-      Charging)    state='>';;
-      Full)        state='F';;
+      Charging)    state='↑';;
+      Full)        state='⬒';;
     esac
 
     percentage=$(acpi -b | cut -d "," -f 2 | tr -d " %")
@@ -40,6 +40,6 @@ battery() {
 }
 
 while true; do
-  echo " $(battery) | $(mpd) | $(date +'%a %B %d, %H:%M')"
+  echo " $(battery) | $(mpd) | $(date +'%a %B %d, %H:%M') "
     sleep 3
-done | dzen2 -x 220 -y 0 -h 14 -ta right -fn "-misc-fixed-medium-r-semicondensed-*-12-110-75-75-c-60-koi8-r" -bg "#161616"
+done | dzen2 -x 220 -y 0 -h 14 -ta right -fn "inconsolata:size=9" -bg "#161616"
