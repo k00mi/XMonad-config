@@ -5,7 +5,7 @@ bar() {
 }
 
 mpd() {
-     output=$(mpc | head -2)
+     output=$(mpc -p $port | head -2)
 
      if [ $(echo "$output" | wc -l) -eq 1 ]; then
        echo "[STOPPED]"
@@ -31,7 +31,7 @@ battery() {
       Discharging) state='↓';;
       Unknown)     state='?';;
       Charging)    state='↑';;
-      Full)        state='⬒';;
+      Full)        state=' ';;
     esac
 
     percentage=$(acpi -b | cut -d "," -f 2 | tr -d " %")
@@ -39,7 +39,9 @@ battery() {
     echo -n "$state$percentage%"
 }
 
+port=6600
+
 while true; do
   echo " $(battery) | $(mpd) | $(date +'%a %B %d, %H:%M') "
-    sleep 3
+  read -t 3 port
 done | dzen2 -x 220 -y 0 -h 14 -ta right -fn "inconsolata:size=9" -bg "#161616"
