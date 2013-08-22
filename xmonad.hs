@@ -94,15 +94,12 @@ myKeys hBar portRef XConfig{XMonad.modMask = modm} = M.fromList
 myStartupHook = composeAll
     [ spawnOnce "dwb"
     , spawnOnce "pidgin"
-    , spawnOnce "urxvt -e 'weechat-curses'"
     ]
 
 
 myManageHook :: ManageHook
 myManageHook = composeAll
-    [ appName     =?  "weechat 0.4.0" --> doShift "2"
-    , className   =?  "Pidgin"        --> doShift "2"
-    -- , className   =?  "Dwb"           --> doShift "1"
+    [ className   =?  "Pidgin"        --> doShift "2"
     , className   =?  "mplayer2"      --> doFloat
     , className   =?  "Steam"         --> doFloat
     , isFullscreen                    --> doFullFloat
