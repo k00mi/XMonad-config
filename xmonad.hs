@@ -25,9 +25,11 @@ import XMonad.Layout.Dishes
 import XMonad.Layout.ComboP
 import XMonad.Layout.Tabbed
 import XMonad.Layout.TwoPane
+import XMonad.Layout.Spacing
 import XMonad.Layout.Accordion
 import XMonad.Layout.NoBorders
 import XMonad.Layout.PerWorkspace
+import XMonad.Layout.ResizableTile
 -- end of IMPORTS }}}
 
 
@@ -78,6 +80,9 @@ myKeys hBar portRef XConfig{XMonad.modMask = modm} = M.fromList
 
       , ((0,         xF86XK_AudioRaiseVolume), raiseVolumeChannels ["Master"] 2 >>= alert)
       , ((0,         xF86XK_AudioLowerVolume), lowerVolumeChannels ["Master"] 2 >>= alert)
+
+      , ((modm,               xK_a), sendMessage MirrorShrink)
+      , ((modm,               xK_z), sendMessage MirrorExpand)
       ]
   where
       withPort str = do
@@ -182,11 +187,12 @@ myTabTheme =
 
 
 -- LAYOUTS {{{
-myLayouts = smartBorders $ avoidStruts
-    $ onWorkspace "2" chatLayout
-    $ tall ||| Mirror tall ||| Full ||| Accordion ||| Dishes 2 (1/6)
+myLayouts = avoidStruts
+    $ onWorkspace "2" (noBorders chatLayout)
+    $ smartBorders $ tall ||| Mirror tall ||| Full ||| Dishes 2 (1/6) ||| spaced
   where
-    tall = Tall 1 (3/100) (1/2)
+    spaced = spacing 30 $ withBorder 5 tall
+    tall = ResizableTall 1 (5/100) (1/2) []
     chatLayout = combineTwoP (Mirror (TwoPane (3/100) (1/2)))
                               (tabbed shrinkText myTabTheme)
                               Full
