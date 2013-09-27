@@ -20,6 +20,7 @@ import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.SetWMName
 
 import XMonad.Layout.Dishes
 import XMonad.Layout.ComboP
@@ -99,6 +100,7 @@ myKeys hBar portRef XConfig{XMonad.modMask = modm} = M.fromList
 myStartupHook = composeAll
     [ spawnOnce "dwb"
     , spawnOnce "pidgin"
+    , setWMName "LG3D"
     ]
 
 
@@ -106,6 +108,7 @@ myManageHook :: ManageHook
 myManageHook = composeAll
     [ className   =?  "Pidgin"        --> doShift "2"
     , className   =?  "mplayer2"      --> doFloat
+    , className   =?  "mpv"      --> doFloat
     , className   =?  "Steam"         --> doFloat
     , isFullscreen                    --> doFullFloat
     ]
