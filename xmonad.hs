@@ -8,6 +8,8 @@ import Control.Monad.IO.Class
 
 import qualified Data.Map as M
 
+import Data.Ratio ((%))
+
 import Graphics.X11.ExtraTypes.XF86
 
 import XMonad.Util.Run
@@ -23,6 +25,7 @@ import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.SetWMName
 
+import XMonad.Layout.IM
 import XMonad.Layout.Dishes
 import XMonad.Layout.ComboP
 import XMonad.Layout.Tabbed
@@ -200,9 +203,10 @@ myLayouts = avoidStruts
     spaced = spacing 30 $ withBorder 5 tall
     tall = ResizableTall 1 (5/100) (1/2) []
     chatLayout = combineTwoP (Mirror (TwoPane (3/100) (1/2)))
-                              (tabbed shrinkText myTabTheme)
+                              pidgin
                               Full
                              (ClassName "Pidgin")
+    pidgin = withIM (1%6) (Title "Buddy List") (tabbed shrinkText myTabTheme)
 -- end of LAYOUTS }}}
 
 
