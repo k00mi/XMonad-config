@@ -15,6 +15,7 @@ import XMonad.Util.Dzen
 import XMonad.Util.Dmenu
 import XMonad.Util.SpawnOnce
 import XMonad.Actions.Volume
+import XMonad.Actions.GridSelect
 
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.ManageDocks
@@ -84,6 +85,8 @@ myKeys hBar portRef XConfig{XMonad.modMask = modm} = M.fromList
 
       , ((modm,               xK_a), sendMessage MirrorShrink)
       , ((modm,               xK_z), sendMessage MirrorExpand)
+
+      , ((modm,               xK_g), goToSelected defaultGSConfig)
       ]
   where
       withPort str = do
