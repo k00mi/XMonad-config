@@ -180,16 +180,14 @@ barFont = "-misc-fixed-medium-r-semicondensed-*-12-110-75-75-c-60-koi8-r"
 
 -- <tab-bar configuration>
 myTabTheme =
-    defaultTheme { fontName            = barFont
-                 , inactiveBorderColor = colorGrayAlt
-                 , inactiveColor       = colorDarkGray
-                 , inactiveTextColor   = colorGrayAlt
-                 , activeBorderColor   = colorGrayAlt
-                 , activeColor         = colorDarkMagenta
-                 , activeTextColor     = colorDarkGray
-                 , urgentBorderColor   = colorBlackAlt
-                 , urgentTextColor     = colorWhite
+    defaultTheme { activeColor         = "#8a999e"
+                 , inactiveColor       = "#545d75"
+                 , activeBorderColor   = "white"
+                 , inactiveBorderColor = "grey"
+                 , activeTextColor     = "white"
+                 , inactiveTextColor   = "grey"
                  , decoHeight          = 14
+                 , fontName            = barFont
                  }
 -- end of COLORS, FONTS, AND PROMPTS }}}
 
@@ -206,7 +204,7 @@ myLayouts = avoidStruts
                               pidgin
                               Full
                              (ClassName "Pidgin")
-    pidgin = withIM (1%6) (Title "Buddy List") (tabbed shrinkText myTabTheme)
+    pidgin = withIM (1%6) (Title "Buddy List") (tabbed shrinkText defaultTheme)
 -- end of LAYOUTS }}}
 
 
