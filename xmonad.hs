@@ -16,6 +16,7 @@ import XMonad.Util.Run
 import XMonad.Util.Dzen
 import XMonad.Util.Dmenu
 import XMonad.Util.SpawnOnce
+import XMonad.Util.NamedScratchpad
 import XMonad.Actions.Volume
 import XMonad.Actions.GridSelect
 
@@ -35,6 +36,8 @@ import XMonad.Layout.Accordion
 import XMonad.Layout.NoBorders
 import XMonad.Layout.PerWorkspace
 import XMonad.Layout.ResizableTile
+
+import XMonad.StackSet (RationalRect(..))
 -- end of IMPORTS }}}
 
 
@@ -67,7 +70,6 @@ main = do
 -- end of MAIN }}}
 
 
-
 -- KEYS {{{
 myKeys :: Handle -> IORef Int -> XConfig l -> M.Map (ButtonMask, KeySym) (X ())
 myKeys hBar portRef XConfig{XMonad.modMask = modm} = M.fromList
@@ -90,6 +92,9 @@ myKeys hBar portRef XConfig{XMonad.modMask = modm} = M.fromList
       , ((modm,               xK_z), sendMessage MirrorExpand)
 
       , ((modm,               xK_g), goToSelected defaultGSConfig)
+
+      , ((modm,               xK_n), namedScratchpadAction scratchpads "ncmpcpp")
+      , ((modm,               xK_m), namedScratchpadAction scratchpads "mutt")
       ]
   where
       withPort str = do
@@ -100,6 +105,12 @@ myKeys hBar portRef XConfig{XMonad.modMask = modm} = M.fromList
         liftIO $ writeIORef portRef p >> hPutStrLn hBar (show p)
 -- end of KEYS }}}
 
+-- ScratchPads {{{
+scratchpads :: [NamedScratchpad]
+scratchpads = map mkSP ["ncmpcpp", "mutt"]
+  where
+    mkSP app = NS app ("urxvt -e " ++ app) (title =? app)
+                  (customFloating (RationalRect 0 0.5 1 0.5))
 
 
 -- HOOKS {{{
@@ -117,6 +128,7 @@ myManageHook = composeAll
     , className   =?  "mpv"      --> doFloat
     , className   =?  "Steam"         --> doFloat
     , isFullscreen                    --> doFullFloat
+    , namedScratchpadManageHook scratchpads
     ]
 -- end of HOOKS }}}
 
