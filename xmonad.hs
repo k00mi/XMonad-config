@@ -95,6 +95,7 @@ myKeys hBar portRef XConfig{XMonad.modMask = modm} = M.fromList
 
       , ((modm,               xK_n), namedScratchpadAction scratchpads "ncmpcpp")
       , ((modm,               xK_m), namedScratchpadAction scratchpads "mutt")
+      , ((modm .|. shiftMask, xK_h), namedScratchpadAction scratchpads "htop")
       ]
   where
       withPort str = do
@@ -108,7 +109,7 @@ myKeys hBar portRef XConfig{XMonad.modMask = modm} = M.fromList
 
 -- ScratchPads {{{
 scratchpads :: [NamedScratchpad]
-scratchpads = map mkSP ["ncmpcpp", "mutt"]
+scratchpads = map mkSP ["ncmpcpp", "mutt", "htop"]
   where
     mkSP app = NS app ("urxvt -e " ++ app) (title =? app)
                   (customFloating (RationalRect 0 0.5 1 0.5))
