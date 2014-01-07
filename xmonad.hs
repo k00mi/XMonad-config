@@ -105,12 +105,14 @@ myKeys hBar portRef XConfig{XMonad.modMask = modm} = M.fromList
         liftIO $ writeIORef portRef p >> hPutStrLn hBar (show p)
 -- end of KEYS }}}
 
+
 -- ScratchPads {{{
 scratchpads :: [NamedScratchpad]
 scratchpads = map mkSP ["ncmpcpp", "mutt"]
   where
     mkSP app = NS app ("urxvt -e " ++ app) (title =? app)
                   (customFloating (RationalRect 0 0.5 1 0.5))
+-- end of ScratchPads }}}
 
 
 -- HOOKS {{{
