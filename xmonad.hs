@@ -18,7 +18,9 @@ import XMonad.Util.Dmenu
 import XMonad.Util.SpawnOnce
 import XMonad.Util.NamedScratchpad
 import XMonad.Actions.Volume
-import XMonad.Actions.GridSelect
+
+import qualified XMonad.Prompt as P
+import XMonad.Prompt.Window
 
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.ManageDocks
@@ -91,11 +93,13 @@ myKeys hBar portRef XConfig{XMonad.modMask = modm} = M.fromList
       , ((modm,               xK_a), sendMessage MirrorShrink)
       , ((modm,               xK_z), sendMessage MirrorExpand)
 
-      , ((modm,               xK_g), goToSelected defaultGSConfig)
+      , ((modm,               xK_slash), windowPromptGoto
+                                          P.defaultXPConfig { P.autoComplete = Just 500000  })
 
       , ((modm,               xK_n), namedScratchpadAction scratchpads "ncmpcpp")
       , ((modm,               xK_m), namedScratchpadAction scratchpads "mutt")
       , ((modm .|. shiftMask, xK_h), namedScratchpadAction scratchpads "htop")
+
       ]
   where
       withPort str = do
