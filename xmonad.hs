@@ -50,11 +50,7 @@ main = do
     mpdPort <- newIORef 6600
     hTabBar <- spawnPipe tabLayoutBar
     hStatusBar <- spawnPipe "/home/koomi/.xmonad/dzenXMonad.sh"
-    xmonad $ withUrgencyHook dzenUrgencyHook { args = [ "-fn", barFont
-                                                      , "-bg", colorDarkCream
-                                                      , "-fg", colorBlue
-                                                      ]
-                                             }
+    xmonad $ withUrgencyHook NoUrgencyHook
            $ defaultConfig
       { modMask             = mod4Mask
       , terminal            = "urxvt"
@@ -151,7 +147,7 @@ myLogHook h = dynamicLogWithPP $ defaultPP
       , ppVisible           =   dzenColor colorCream      colorDarkGray . hideScratchpad
       , ppHidden            =   dzenColor colorBlue       colorDarkGray . hideScratchpad
       , ppHiddenNoWindows   =   dzenColor colorGray       colorDarkGray . hideScratchpad
-      , ppUrgent            =   dzenColor colorMagenta    colorDarkGray . pad
+      , ppUrgent            =   dzenColor colorDarkGray   colorYellow   . pad
       , ppWsSep             =   ""
       , ppSep               =   " | "
       , ppTitle             =   const ""
@@ -185,7 +181,7 @@ colorWhiteAlt       = "#8c8b8e"
 colorDarkWhite      = "#606060"
 colorCream          = "#a9a6af"
 colorDarkCream      = "#5f656b"
-colorMagenta        = "#a488d9"
+colorYellow         = "#00ffff"
 colorMagentaAlt     = "#7965ac"
 colorDarkMagenta    = "#8e82a2"
 colorBlue           = "#98a7b6"
