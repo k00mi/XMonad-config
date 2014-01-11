@@ -23,6 +23,7 @@ import qualified XMonad.Prompt as P
 import XMonad.Prompt.Window
 
 import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.DynamicLog
@@ -50,7 +51,7 @@ main = do
     mpdPort <- newIORef 6600
     hTabBar <- spawnPipe tabLayoutBar
     hStatusBar <- spawnPipe "/home/koomi/.xmonad/dzenXMonad.sh"
-    xmonad $ withUrgencyHook NoUrgencyHook
+    xmonad $ ewmh $ withUrgencyHook NoUrgencyHook
            $ defaultConfig
       { modMask             = mod4Mask
       , terminal            = "urxvt"
@@ -64,6 +65,8 @@ main = do
       , focusedBorderColor  = colorFocusedBorder
       , borderWidth         = 1
       , focusFollowsMouse   = True
+      , handleEventHook     = handleEventHook defaultConfig <+>
+                                fullscreenEventHook
       }
 -- end of MAIN }}}
 
