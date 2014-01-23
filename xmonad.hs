@@ -50,7 +50,7 @@ main :: IO ()
 main = do
     mpdPort <- newIORef 6600
     hTabBar <- spawnPipe tabLayoutBar
-    hStatusBar <- spawnPipe "/home/koomi/.xmonad/dzenXMonad.sh"
+    hStatusBar <- spawnPipe "~/.xmonad/dzenXMonad.sh"
     xmonad $ ewmh $ withUrgencyHook NoUrgencyHook
            $ defaultConfig
       { modMask             = mod4Mask
