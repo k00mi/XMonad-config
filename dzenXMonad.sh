@@ -5,7 +5,7 @@ bar() {
 }
 
 mpd() {
-     output=$(mpc -p $port | head -2)
+     output=$(mpc | head -2)
 
      if [ $(echo "$output" | wc -l) -eq 1 ]; then
        echo "[STOPPED]"
@@ -39,9 +39,7 @@ battery() {
     echo -n "$state$percentage%"
 }
 
-port=6600
-
 while true; do
   echo " $(battery) | $(mpd) | $(date +'%a %B %d, %H:%M') "
-  read -t 3 port
+  sleep 3
 done | dzen2 -x 220 -y 0 -h 13 -ta right -fn "-*-Classical Robot-medium-r-normal--*-80-0-0-p-*-koi6-r" -bg "#002b36" -fg "#98aeb6"

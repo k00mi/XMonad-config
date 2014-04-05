@@ -2,9 +2,6 @@
 import XMonad
 
 import System.IO
-import Data.IORef
-import Control.Monad
-import Control.Monad.IO.Class
 
 import qualified Data.Map as M
 
@@ -14,7 +11,6 @@ import Graphics.X11.ExtraTypes.XF86
 
 import XMonad.Util.Run
 import XMonad.Util.Dzen
-import XMonad.Util.Dmenu
 import XMonad.Util.SpawnOnce
 import XMonad.Util.NamedScratchpad
 import XMonad.Actions.Volume
@@ -48,19 +44,17 @@ import XMonad.StackSet (RationalRect(..))
 -- MAIN {{{
 main :: IO ()
 main = do
-    mpdPort <- newIORef 6600
-    hTabBar <- spawnPipe tabLayoutBar
-    hStatusBar <- spawnPipe "/home/koomi/.xmonad/dzenXMonad.sh"
+    dzenHandle <- spawnPipe myStatusBar
     xmonad $ ewmh $ withUrgencyHook NoUrgencyHook
            $ defaultConfig
       { modMask             = mod4Mask
       , terminal            = "urxvt"
       , workspaces          = map show [1..9]
-      , keys                = \c -> myKeys hStatusBar mpdPort c `M.union` keys defaultConfig c
+      , keys                = \c -> myKeys c `M.union` keys defaultConfig c
       , layoutHook          = myLayouts
       , manageHook          = myManageHook <+> manageDocks
       , startupHook         = myStartupHook
-      , logHook             = myLogHook hTabBar
+      , logHook             = myLogHook dzenHandle
       , normalBorderColor   = colorBlueLight
       , focusedBorderColor  = colorFG
       , borderWidth         = 1
@@ -72,17 +66,16 @@ main = do
 
 
 -- KEYS {{{
-myKeys :: Handle -> IORef Int -> XConfig l -> M.Map (ButtonMask, KeySym) (X ())
-myKeys hBar portRef XConfig{XMonad.modMask = modm} = M.fromList
+myKeys :: XConfig l -> M.Map (ButtonMask, KeySym) (X ())
+myKeys XConfig{XMonad.modMask = modm} = M.fromList
       [ ((modm,               xK_asciicircum), spawn "slock")
       , ((modm,               xK_Return     ), spawn "urxvt")
       , ((modm,               xK_p          ), spawn "dmenu_run -b")
 
-      , ((modm,               xK_Up         ), withPort "mpc -q next -p ")
-      , ((modm,               xK_Down       ), withPort "mpc -q prev -p ")
-      , ((modm,               xK_c          ), withPort "mpc -q toggle -p ")
-      , ((modm .|. shiftMask, xK_m          ), withPort "/home/koomi/bin/mpdmenu ")
-      , ((modm,               xK_s          ), portMenu)
+      , ((modm,               xK_Up         ), spawn "mpc -q next")
+      , ((modm,               xK_Down       ), spawn "mpc -q prev")
+      , ((modm,               xK_c          ), spawn "mpc -q toggle")
+      , ((modm .|. shiftMask, xK_m          ), spawn "/home/koomi/bin/mpdmenu")
 
       , ((modm,               xK_u          ), focusUrgent)
 
@@ -100,13 +93,6 @@ myKeys hBar portRef XConfig{XMonad.modMask = modm} = M.fromList
       , ((modm .|. shiftMask, xK_h), namedScratchpadAction scratchpads "htop")
 
       ]
-  where
-      withPort str = do
-        p <- liftIO $ readIORef portRef
-        spawn $ str ++ show p
-      portMenu = do
-        p <- fmap read $ menuArgs "dmenu" ["-b"] ["6600", "6601"]
-        liftIO $ writeIORef portRef p >> hPutStrLn hBar (show p)
 -- end of KEYS }}}
 
 
@@ -121,7 +107,8 @@ scratchpads = map mkSP ["ncmpcpp", "mutt", "htop"]
 
 -- HOOKS {{{
 myStartupHook = composeAll
-    [ spawnOnce "dwb"
+    [ spawn     "/home/koomi/.xmonad/dzenXMonad.sh"
+    , spawnOnce "dwb"
     , spawnOnce "pidgin"
     , setWMName "LG3D"
     ]
@@ -141,7 +128,7 @@ myManageHook = composeAll
 
 
 -- DZEN {{{
-tabLayoutBar = "dzen2 -x '0' -y '0' -h '13' -w '220' -ta 'l' -bg '" ++ colorBG ++ "' -fg '" ++ colorBG ++ "' -fn '" ++ barFont ++ "'"
+myStatusBar = "dzen2 -x '0' -y '0' -h '13' -w '220' -ta 'l' -bg '" ++ colorBG ++ "' -fg '" ++ colorBG ++ "' -fn '" ++ barFont ++ "'"
 
 myLogHook :: Handle -> X ()
 myLogHook h = dynamicLogWithPP $ defaultPP
