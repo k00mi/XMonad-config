@@ -110,7 +110,7 @@ scratchpads = map mkSP ["ncmpcpp", "mutt", "htop"]
 
 -- HOOKS {{{
 myStartupHook = composeAll
-    [ spawn     "/home/koomi/.xmonad/dzenXMonad.sh"
+    [ spawn     "~/.xmonad/dzenXMonad.sh"
     , spawnOnce "dwb"
     , spawnOnce "pidgin"
     , setWMName "LG3D"
