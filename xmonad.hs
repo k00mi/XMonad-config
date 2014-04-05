@@ -13,6 +13,7 @@ import XMonad.Util.Run
 import XMonad.Util.Dzen
 import XMonad.Util.SpawnOnce
 import XMonad.Util.NamedScratchpad
+import XMonad.Util.XSelection
 import XMonad.Actions.Volume
 
 import qualified XMonad.Prompt as P
@@ -92,6 +93,8 @@ myKeys XConfig{XMonad.modMask = modm} = M.fromList
       , ((modm,               xK_m), namedScratchpadAction scratchpads "mutt")
       , ((modm .|. shiftMask, xK_h), namedScratchpadAction scratchpads "htop")
 
+      , ((modm .|. shiftMask, xK_s), do sel <- getSelection
+                                        spawn ("echo '" ++ sel ++ "' | ix -i xmonad - | xclip"))
       ]
 -- end of KEYS }}}
 
