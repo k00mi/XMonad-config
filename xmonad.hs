@@ -61,8 +61,8 @@ main = do
       , manageHook          = myManageHook <+> manageDocks
       , startupHook         = myStartupHook
       , logHook             = myLogHook hTabBar
-      , normalBorderColor   = colorNormalBorder
-      , focusedBorderColor  = colorFocusedBorder
+      , normalBorderColor   = colorBlueLight
+      , focusedBorderColor  = colorFG
       , borderWidth         = 1
       , focusFollowsMouse   = True
       , handleEventHook     = handleEventHook defaultConfig <+>
@@ -141,16 +141,16 @@ myManageHook = composeAll
 
 
 -- DZEN {{{
-tabLayoutBar = "dzen2 -x '0' -y '0' -h '14' -w '220' -ta 'l' -bg '" ++ colorDarkGray ++ "' -fg '" ++ colorBlue ++ "' -fn '" ++ barFont ++ "'"
+tabLayoutBar = "dzen2 -x '0' -y '0' -h '13' -w '220' -ta 'l' -bg '" ++ colorBG ++ "' -fg '" ++ colorBG ++ "' -fn '" ++ barFont ++ "'"
 
 myLogHook :: Handle -> X ()
 myLogHook h = dynamicLogWithPP $ defaultPP
     {
-        ppCurrent           =   dzenColor colorDarkGray   colorCream    . hideScratchpad
-      , ppVisible           =   dzenColor colorCream      colorDarkGray . hideScratchpad
-      , ppHidden            =   dzenColor colorBlue       colorDarkGray . hideScratchpad
-      , ppHiddenNoWindows   =   dzenColor colorGray       colorDarkGray . hideScratchpad
-      , ppUrgent            =   dzenColor colorDarkGray   colorYellow   . pad
+        ppCurrent           =   dzenColor colorFG         colorGreen . hideScratchpad
+      , ppVisible           =   dzenColor colorFG         colorRed   . hideScratchpad
+      , ppHidden            =   dzenColor colorFG         colorBG    . hideScratchpad
+      , ppHiddenNoWindows   =   dzenColor colorBlueLight  colorBG    . hideScratchpad
+      , ppUrgent            =   dzenColor colorFG         colorRed   . pad
       , ppWsSep             =   ""
       , ppSep               =   " | "
       , ppTitle             =   const ""
@@ -163,10 +163,10 @@ myLogHook h = dynamicLogWithPP $ defaultPP
 alert = dzenConfig conf . show . round
   where
     conf = timeout 2
-       >=> onCurr (center 20 14)
+       >=> onCurr (center 20 13)
        >=> font barFont
-       >=> addArgs ["-bg", colorDarkGray]
-       >=> addArgs ["-fg", colorBlue]
+       >=> addArgs ["-bg", colorBG]
+       >=> addArgs ["-fg", colorFG]
 -- end of DZEN }}}
 
 
@@ -174,27 +174,19 @@ alert = dzenConfig conf . show . round
 -- COLORS, FONTS, AND PROMPTS {{{
 
 -- <colors>
-colorBlack          = "#000000"
-colorBlackAlt       = "#040404"
-colorGray           = "#444444"
-colorGrayAlt        = "#282828"
-colorDarkGray       = "#161616"
-colorWhite          = "#cfbfad"
-colorWhiteAlt       = "#8c8b8e"
-colorDarkWhite      = "#606060"
-colorCream          = "#a9a6af"
-colorDarkCream      = "#5f656b"
-colorYellow         = "#00ffff"
-colorMagentaAlt     = "#7965ac"
-colorDarkMagenta    = "#8e82a2"
-colorBlue           = "#98a7b6"
-colorBlueAlt        = "#598691"
-colorDarkBlue       = "#464a4a"
-colorNormalBorder   = colorGray
-colorFocusedBorder  = colorBlue
+colorFG = colorGrayLight
+colorBG = colorBlueDark
+
+colorBlueDark       = "#002b36"
+colorBlueLight      = "#586e75"
+colorGrayLight      = "#98aeb6"
+colorCyan           = "#2aa198"
+colorRed            = "#d70000"
+colorOrange         = "#cb4b16"
+colorGreen          = "#859900"
 
 -- <font>
-barFont = "-misc-fixed-medium-r-semicondensed-*-12-110-75-75-c-60-koi8-r"
+barFont = "-*-Classical Robot-medium-r-normal--*-80-0-0-p-*-koi6-r"
 
 -- <tab-bar configuration>
 myTabTheme =
@@ -204,7 +196,7 @@ myTabTheme =
                  , inactiveBorderColor = "grey"
                  , activeTextColor     = "white"
                  , inactiveTextColor   = "grey"
-                 , decoHeight          = 14
+                 , decoHeight          = 13
                  , fontName            = barFont
                  }
 -- end of COLORS, FONTS, AND PROMPTS }}}

@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 bar() {
-    echo $1 | gdbar -fg '#aecf96' -bg '#494b4f' -nonl
+    echo $1 | gdbar -fg '#859900' -bg '#586e75' -nonl
 }
 
 mpd() {
@@ -15,7 +15,7 @@ mpd() {
      state=$(echo $output | tail -1 | awk '{print $1 }' | tr -d '[]')
 
      case $state in
-       playing) state='|> ';;
+       playing) state='▶ ';;
        paused)  state='|| ';;
      esac
 
@@ -44,4 +44,4 @@ port=6600
 while true; do
   echo " $(battery) | $(mpd) | $(date +'%a %B %d, %H:%M') "
   read -t 3 port
-done | dzen2 -x 220 -y 0 -h 14 -ta right -fn "-misc-fixed-medium-r-semicondensed-*-12-110-75-75-c-60-koi8-r" -bg "#161616"
+done | dzen2 -x 220 -y 0 -h 13 -ta right -fn "-*-Classical Robot-medium-r-normal--*-80-0-0-p-*-koi6-r" -bg "#002b36" -fg "#98aeb6"
