@@ -18,6 +18,7 @@ import XMonad.Actions.Volume
 
 import qualified XMonad.Prompt as P
 import XMonad.Prompt.Window
+import XMonad.Prompt.Shell
 
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.EwmhDesktops
@@ -46,6 +47,7 @@ import XMonad.StackSet (RationalRect(..))
 main :: IO ()
 main = do
     dzenHandle <- spawnPipe myStatusBar
+    browser <- getBrowser
     xmonad $ ewmh $ withUrgencyHook NoUrgencyHook
            $ defaultConfig
       { modMask             = mod4Mask
@@ -54,7 +56,7 @@ main = do
       , keys                = \c -> myKeys c `M.union` keys defaultConfig c
       , layoutHook          = myLayouts
       , manageHook          = myManageHook <+> manageDocks
-      , startupHook         = myStartupHook
+      , startupHook         = myStartupHook browser
       , logHook             = myLogHook dzenHandle
       , normalBorderColor   = colorBlueLight
       , focusedBorderColor  = colorFG
@@ -109,9 +111,9 @@ scratchpads = map mkSP ["ncmpcpp", "mutt", "htop"]
 
 
 -- HOOKS {{{
-myStartupHook = composeAll
+myStartupHook browser = composeAll
     [ spawn     "~/.xmonad/dzenXMonad.sh"
-    , spawnOnce "dwb"
+    , spawnOnce browser
     , spawnOnce "pidgin"
     , setWMName "LG3D"
     ]
