@@ -72,6 +72,8 @@ main = do
 myKeys :: XConfig l -> M.Map (ButtonMask, KeySym) (X ())
 myKeys XConfig{XMonad.modMask = modm} = M.fromList
       [ ((modm,               xK_asciicircum), spawn "slock")
+      , ((modm .|. shiftMask, xK_asciicircum), do spawn "slock"
+                                                  spawn "systemctl suspend")
       , ((modm,               xK_Return     ), spawn "urxvt")
       , ((modm,               xK_p          ), spawn "dmenu_run -b")
 
