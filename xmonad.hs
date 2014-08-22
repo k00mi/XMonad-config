@@ -36,7 +36,7 @@ import XMonad.Layout.Spacing
 import XMonad.Layout.Accordion
 import XMonad.Layout.NoBorders
 import XMonad.Layout.PerWorkspace
-import XMonad.Layout.ResizableTile
+import XMonad.Layout.MouseResizableTile
 
 import XMonad.StackSet (RationalRect(..))
 -- end of IMPORTS }}}
@@ -88,8 +88,8 @@ myKeys XConfig{XMonad.modMask = modm} = M.fromList
       , ((0,         xF86XK_AudioRaiseVolume), raiseVolumeChannels ["Master"] 2 >>= alert)
       , ((0,         xF86XK_AudioLowerVolume), lowerVolumeChannels ["Master"] 2 >>= alert)
 
-      , ((modm,               xK_a), sendMessage MirrorShrink)
-      , ((modm,               xK_z), sendMessage MirrorExpand)
+      , ((modm,               xK_a), sendMessage ShrinkSlave)
+      , ((modm,               xK_z), sendMessage ExpandSlave)
 
       , ((modm,               xK_slash), windowPromptGoto
                                           P.defaultXPConfig { P.autoComplete = Just 500000  })
@@ -202,10 +202,10 @@ myTabTheme =
 -- LAYOUTS {{{
 myLayouts = avoidStruts
     $ onWorkspace "2" (noBorders chatLayout)
-    $ smartBorders $ tall ||| Mirror tall ||| Full ||| Dishes 2 (1/6) ||| spaced
+    $ smartBorders $ resizeable ||| Mirror mouseResizableTile ||| Full ||| Dishes 2 (1/6) ||| spaced
   where
-    spaced = spacing 30 $ withBorder 5 tall
-    tall = ResizableTall 1 (5/100) (1/2) []
+    resizeable = mouseResizableTile { draggerType = BordersDragger }
+    spaced = spacing 30 $ withBorder 5 resizeable
     chatLayout = combineTwoP (Mirror (TwoPane (3/100) (1/2)))
                               pidgin
                               Full
