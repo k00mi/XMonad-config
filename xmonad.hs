@@ -81,6 +81,7 @@ myKeys XConfig{XMonad.modMask = modm} = M.fromList
       , ((modm,               xK_Down       ), spawn "mpc -q prev")
       , ((modm,               xK_c          ), spawn "mpc -q toggle")
       , ((modm .|. shiftMask, xK_m          ), spawn "/home/koomi/bin/mpdmenu")
+      , ((modm .|. shiftMask, xK_p          ), spawn "passmenu -b")
 
       , ((modm,               xK_u          ), focusUrgent)
 
