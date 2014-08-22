@@ -97,6 +97,7 @@ myKeys XConfig{XMonad.modMask = modm} = M.fromList
       , ((modm,               xK_n), namedScratchpadAction scratchpads "ncmpcpp")
       , ((modm,               xK_m), namedScratchpadAction scratchpads "mutt")
       , ((modm .|. shiftMask, xK_h), namedScratchpadAction scratchpads "htop")
+      , ((modm,               xK_r), namedScratchpadAction scratchpads "ranger")
 
       , ((modm .|. shiftMask, xK_s), do sel <- getSelection
                                         spawn ("echo '" ++ sel ++ "' | ix -i xmonad - | xclip"))
@@ -106,7 +107,7 @@ myKeys XConfig{XMonad.modMask = modm} = M.fromList
 
 -- ScratchPads {{{
 scratchpads :: [NamedScratchpad]
-scratchpads = map mkSP ["ncmpcpp", "mutt", "htop"]
+scratchpads = map mkSP ["ncmpcpp", "mutt", "htop", "ranger"]
   where
     mkSP app = NS app ("urxvt -e " ++ app) (title =? app)
                   (customFloating (RationalRect 0 0.5 1 0.5))
