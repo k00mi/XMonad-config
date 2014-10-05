@@ -83,40 +83,37 @@ myKeys XConfig{XMonad.modMask = modm} = M.fromList
       , ((0,         xF86XK_AudioLowerVolume), lowerVolumeChannels ["Master"] 2 >>= alert)
 
       -- Directional navigation of windows
-      , ((modm,                 xK_l        ), windowGo R False)
+      , ((modm,                 xK_s        ), windowGo R False)
       , ((modm,                 xK_h        ), windowGo L False)
-      , ((modm,                 xK_j        ), windowGo D False)
-      , ((modm,                 xK_k        ), windowGo U False)
-      , ((modm .|. controlMask, xK_l        ), windowSwap R False)
+      , ((modm,                 xK_t        ), windowGo D False)
+      , ((modm,                 xK_n        ), windowGo U False)
+      , ((modm .|. controlMask, xK_s        ), windowSwap R False)
       , ((modm .|. controlMask, xK_h        ), windowSwap L False)
-      , ((modm .|. controlMask, xK_j        ), windowSwap D False)
-      , ((modm .|. controlMask, xK_k        ), windowSwap U False)
+      , ((modm .|. controlMask, xK_t        ), windowSwap D False)
+      , ((modm .|. controlMask, xK_n        ), windowSwap U False)
 
       -- BSP layout
-      , ((modm .|. altMask,               xK_l     ), sendMessage $ ExpandTowards R)
+      , ((modm .|. altMask,               xK_s     ), sendMessage $ ExpandTowards R)
       , ((modm .|. altMask,               xK_h     ), sendMessage $ ExpandTowards L)
-      , ((modm .|. altMask,               xK_j     ), sendMessage $ ExpandTowards D)
-      , ((modm .|. altMask,               xK_k     ), sendMessage $ ExpandTowards U)
-      , ((modm .|. altMask .|. shiftMask, xK_l     ), sendMessage $ ShrinkFrom R)
-      , ((modm .|. altMask .|. shiftMask, xK_h     ), sendMessage $ ShrinkFrom L)
-      , ((modm .|. altMask .|. shiftMask, xK_j     ), sendMessage $ ShrinkFrom D)
-      , ((modm .|. altMask .|. shiftMask, xK_k     ), sendMessage $ ShrinkFrom U)
+      , ((modm .|. altMask,               xK_t     ), sendMessage $ ExpandTowards D)
+      , ((modm .|. altMask,               xK_n     ), sendMessage $ ExpandTowards U)
+      , ((modm .|. altMask .|. shiftMask, xK_h     ), sendMessage $ ShrinkFrom R)
+      , ((modm .|. altMask .|. shiftMask, xK_s     ), sendMessage $ ShrinkFrom L)
+      , ((modm .|. altMask .|. shiftMask, xK_t     ), sendMessage $ ShrinkFrom D)
+      , ((modm .|. altMask .|. shiftMask, xK_n     ), sendMessage $ ShrinkFrom U)
       , ((modm .|. altMask,               xK_r     ), sendMessage Rotate)
-      , ((modm .|. altMask,               xK_s     ), sendMessage Swap)
+      , ((modm .|. altMask .|. shiftMask, xK_s     ), sendMessage Swap)
 
       -- Search window by title
       , ((modm,               xK_slash), windowPromptGoto
                                           P.defaultXPConfig { P.autoComplete = Just 500000  })
 
       -- Scratchpads
-      , ((modm,               xK_n), namedScratchpadAction scratchpads "ncmpcpp")
+      , ((modm .|. shiftMask, xK_n), namedScratchpadAction scratchpads "ncmpcpp")
       , ((modm,               xK_m), namedScratchpadAction scratchpads "mutt")
       , ((modm .|. shiftMask, xK_h), namedScratchpadAction scratchpads "htop")
       , ((modm,               xK_r), namedScratchpadAction scratchpads "ranger")
       , ((modm,               xK_w), namedScratchpadAction scratchpads "wyrd")
-
-      , ((modm .|. shiftMask, xK_s), do sel <- getSelection
-                                        spawn ("echo '" ++ sel ++ "' | ix -i xmonad - | xclip"))
       ]
 
 altMask = mod1Mask
