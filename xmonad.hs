@@ -27,16 +27,7 @@ import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.SetWMName
 
-import XMonad.Layout.IM
-import XMonad.Layout.Dishes
-import XMonad.Layout.ComboP
-import XMonad.Layout.Tabbed
-import XMonad.Layout.TwoPane
-import XMonad.Layout.Spacing
-import XMonad.Layout.Accordion
 import XMonad.Layout.NoBorders
-import XMonad.Layout.PerWorkspace
-import XMonad.Layout.MouseResizableTile
 import XMonad.Layout.BinarySpacePartition
 
 import XMonad.StackSet (RationalRect(..))
@@ -88,9 +79,6 @@ myKeys XConfig{XMonad.modMask = modm} = M.fromList
 
       , ((0,         xF86XK_AudioRaiseVolume), raiseVolumeChannels ["Master"] 2 >>= alert)
       , ((0,         xF86XK_AudioLowerVolume), lowerVolumeChannels ["Master"] 2 >>= alert)
-
-      , ((modm,               xK_a), sendMessage ShrinkSlave)
-      , ((modm,               xK_z), sendMessage ExpandSlave)
 
       , ((modm .|. altMask,               xK_l     ), sendMessage $ ExpandTowards R)
       , ((modm .|. altMask,               xK_h     ), sendMessage $ ExpandTowards L)
@@ -198,32 +186,12 @@ colorGreen          = "#859900"
 
 -- <font>
 barFont = "-*-Classical Robot-medium-r-normal--*-80-0-0-p-*-koi6-r"
-
--- <tab-bar configuration>
-myTabTheme =
-    defaultTheme { activeColor         = "#8a999e"
-                 , inactiveColor       = "#545d75"
-                 , activeBorderColor   = "white"
-                 , inactiveBorderColor = "grey"
-                 , activeTextColor     = "white"
-                 , inactiveTextColor   = "grey"
-                 , decoHeight          = 13
-                 , fontName            = barFont
-                 }
 -- end of COLORS, FONTS, AND PROMPTS }}}
 
 
 
 -- LAYOUTS {{{
-myLayouts = avoidStruts
-    $ onWorkspace "2" (noBorders chatLayout)
-    $ smartBorders $ emptyBSP ||| Full
-  where
-    chatLayout = combineTwoP (Mirror (TwoPane (3/100) (1/2)))
-                              pidgin
-                              Full
-                             (ClassName "Pidgin")
-    pidgin = withIM (1%6) (Title "Buddy List") (tabbed shrinkText defaultTheme)
+myLayouts = avoidStruts $ smartBorders $ emptyBSP ||| Full
 -- end of LAYOUTS }}}
 
 
