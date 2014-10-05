@@ -37,6 +37,7 @@ import XMonad.Layout.Accordion
 import XMonad.Layout.NoBorders
 import XMonad.Layout.PerWorkspace
 import XMonad.Layout.MouseResizableTile
+import XMonad.Layout.BinarySpacePartition
 
 import XMonad.StackSet (RationalRect(..))
 -- end of IMPORTS }}}
@@ -91,6 +92,17 @@ myKeys XConfig{XMonad.modMask = modm} = M.fromList
       , ((modm,               xK_a), sendMessage ShrinkSlave)
       , ((modm,               xK_z), sendMessage ExpandSlave)
 
+      , ((modm .|. altMask,               xK_l     ), sendMessage $ ExpandTowards R)
+      , ((modm .|. altMask,               xK_h     ), sendMessage $ ExpandTowards L)
+      , ((modm .|. altMask,               xK_j     ), sendMessage $ ExpandTowards D)
+      , ((modm .|. altMask,               xK_k     ), sendMessage $ ExpandTowards U)
+      , ((modm .|. altMask .|. shiftMask, xK_l     ), sendMessage $ ShrinkFrom R)
+      , ((modm .|. altMask .|. shiftMask, xK_h     ), sendMessage $ ShrinkFrom L)
+      , ((modm .|. altMask .|. shiftMask, xK_j     ), sendMessage $ ShrinkFrom D)
+      , ((modm .|. altMask .|. shiftMask, xK_k     ), sendMessage $ ShrinkFrom U)
+      , ((modm .|. altMask,               xK_r     ), sendMessage Rotate)
+      , ((modm .|. altMask,               xK_s     ), sendMessage Swap)
+
       , ((modm,               xK_slash), windowPromptGoto
                                           P.defaultXPConfig { P.autoComplete = Just 500000  })
 
@@ -103,6 +115,8 @@ myKeys XConfig{XMonad.modMask = modm} = M.fromList
       , ((modm .|. shiftMask, xK_s), do sel <- getSelection
                                         spawn ("echo '" ++ sel ++ "' | ix -i xmonad - | xclip"))
       ]
+
+altMask = mod1Mask
 -- end of KEYS }}}
 
 
@@ -203,10 +217,8 @@ myTabTheme =
 -- LAYOUTS {{{
 myLayouts = avoidStruts
     $ onWorkspace "2" (noBorders chatLayout)
-    $ smartBorders $ resizeable ||| Mirror mouseResizableTile ||| Full ||| Dishes 2 (1/6) ||| spaced
+    $ smartBorders $ emptyBSP ||| Full
   where
-    resizeable = mouseResizableTile { draggerType = BordersDragger }
-    spaced = spacing 30 $ withBorder 5 resizeable
     chatLayout = combineTwoP (Mirror (TwoPane (3/100) (1/2)))
                               pidgin
                               Full
