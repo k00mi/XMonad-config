@@ -14,7 +14,9 @@ import XMonad.Util.Dzen
 import XMonad.Util.SpawnOnce
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.XSelection
+
 import XMonad.Actions.Volume
+import XMonad.Actions.Navigation2D
 
 import qualified XMonad.Prompt as P
 import XMonad.Prompt.Window
@@ -80,6 +82,17 @@ myKeys XConfig{XMonad.modMask = modm} = M.fromList
       , ((0,         xF86XK_AudioRaiseVolume), raiseVolumeChannels ["Master"] 2 >>= alert)
       , ((0,         xF86XK_AudioLowerVolume), lowerVolumeChannels ["Master"] 2 >>= alert)
 
+      -- Directional navigation of windows
+      , ((modm,                 xK_l        ), windowGo R False)
+      , ((modm,                 xK_h        ), windowGo L False)
+      , ((modm,                 xK_j        ), windowGo D False)
+      , ((modm,                 xK_k        ), windowGo U False)
+      , ((modm .|. controlMask, xK_l        ), windowSwap R False)
+      , ((modm .|. controlMask, xK_h        ), windowSwap L False)
+      , ((modm .|. controlMask, xK_j        ), windowSwap D False)
+      , ((modm .|. controlMask, xK_k        ), windowSwap U False)
+
+      -- BSP layout
       , ((modm .|. altMask,               xK_l     ), sendMessage $ ExpandTowards R)
       , ((modm .|. altMask,               xK_h     ), sendMessage $ ExpandTowards L)
       , ((modm .|. altMask,               xK_j     ), sendMessage $ ExpandTowards D)
@@ -91,9 +104,11 @@ myKeys XConfig{XMonad.modMask = modm} = M.fromList
       , ((modm .|. altMask,               xK_r     ), sendMessage Rotate)
       , ((modm .|. altMask,               xK_s     ), sendMessage Swap)
 
+      -- Search window by title
       , ((modm,               xK_slash), windowPromptGoto
                                           P.defaultXPConfig { P.autoComplete = Just 500000  })
 
+      -- Scratchpads
       , ((modm,               xK_n), namedScratchpadAction scratchpads "ncmpcpp")
       , ((modm,               xK_m), namedScratchpadAction scratchpads "mutt")
       , ((modm .|. shiftMask, xK_h), namedScratchpadAction scratchpads "htop")
